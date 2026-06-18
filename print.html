@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hotkey Reference — Print</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: Letter landscape;
+      margin: 0.55in 0.5in;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 9px;
+      color: #0f1629;
+      background: #fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 7px;
+      border-bottom: 2px solid #0f1629;
+    }
+    .page-header h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .page-header h1 span {
+      color: #4f46e5;
+    }
+    .page-header-right {
+      font-size: 8px;
+      color: #64748b;
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    /* ── MODIFIER LEGEND ── */
+    .mod-strip {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 10px;
+      padding: 4px 8px;
+      background: #f5f6fa;
+      border-radius: 5px;
+      border: 1px solid #e2e5ef;
+    }
+    .mod-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 8px;
+      color: #64748b;
+    }
+    .mod-key {
+      display: inline-flex;
+      background: #fff;
+      border: 1px solid #c5cbdf;
+      border-bottom-width: 2px;
+      border-radius: 3px;
+      padding: 0 4px;
+      font-size: 9px;
+      font-family: "SF Mono", monospace;
+      color: #0f1629;
+      line-height: 1.6;
+    }
+
+    /* ── GRID: 4 columns ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      align-items: start;
+    }
+    .grid.wide { grid-template-columns: repeat(2, 1fr); }
+
+    /* ── CARD ── */
+    .card {
+      border: 1px solid #e2e5ef;
+      border-radius: 6px;
+      overflow: hidden;
+      break-inside: avoid;
+    }
+    .card.span2 { grid-column: span 2; }
+    .card.span4 { grid-column: span 4; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px 4px;
+      border-bottom: 1px solid #e2e5ef;
+      border-top: 2px solid var(--accent, #94a3b8);
+      background: color-mix(in srgb, var(--accent, #94a3b8) 6%, #fff);
+    }
+    .card-logo {
+      font-size: 11px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: color-mix(in srgb, var(--accent, #94a3b8) 10%, #fff);
+      border-radius: 4px;
+      border: 1px solid color-mix(in srgb, var(--accent, #94a3b8) 18%, #fff);
+      flex-shrink: 0;
+    }
+    .card-title {
+      font-size: 9px;
+      font-weight: 700;
+      color: #0f1629;
+      flex: 1;
+    }
+    .card-stage {
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--accent, #64748b);
+      background: color-mix(in srgb, var(--accent, #64748b) 10%, #fff);
+      border: 1px solid color-mix(in srgb, var(--accent, #64748b) 20%, #fff);
+      border-radius: 3px;
+      padding: 1px 5px;
+      white-space: nowrap;
+    }
+
+    /* ── ROWS ── */
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3px 8px;
+      border-bottom: 1px solid #f0f2f8;
+      gap: 6px;
+    }
+    .row:last-child { border-bottom: none; }
+    .row.star { background: color-mix(in srgb, var(--accent, #94a3b8) 4%, #fff); }
+    .row.star::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--accent, #94a3b8);
+    }
+    .row { position: relative; }
+    .row-label {
+      font-size: 8px;
+      color: #64748b;
+      flex: 1;
+    }
+    .row.star .row-label { color: #0f1629; font-weight: 600; }
+    .keys { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+    kbd {
+      display: inline-flex;
+      background: #eaecf5;
+      border: 1px solid #bfc6dc;
+      border-bottom-width: 2px;
+      border-radius: 3px;
+      padding: 0 4px;
+      font-size: 8px;
+      font-family: "SF Mono", monospace;
+      color: #0f1629;
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+    .row.star kbd {
+      border-bottom-color: color-mix(in srgb, var(--accent, #94a3b8) 60%, #bfc6dc);
+    }
+    .plus { color: #9ca3af; font-size: 7px; margin: 0 1px; }
+    .then { color: #9ca3af; font-size: 7px; margin: 0 2px; font-style: italic; }
+    .cmd {
+      display: inline-flex;
+      background: color-mix(in srgb, #9333ea 8%, #eaecf5);
+      border: 1px solid color-mix(in srgb, #9333ea 18%, #bfc6dc);
+      border-radius: 3px;
+      padding: 0 4px;
+      font-size: 8px;
+      font-family: "SF Mono", monospace;
+      color: #6b21a8;
+      line-height: 1.6;
+    }
+    .row-group {
+      padding: 2px 8px 1px;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #9ca3af;
+      background: #f5f6fa;
+      border-bottom: 1px solid #e2e5ef;
+    }
+
+    /* ── SPLIT CARD (Claude) ── */
+    .card-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .card-col + .card-col { border-left: 1px solid #e2e5ef; }
+    .card-col .row:last-child { border-bottom: none; }
+
+    /* ── BANNER CARDS (Wispr, Render) ── */
+    .card-banner-body { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .card-banner-body.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .card-banner-body .row { border-bottom: none; }
+    .card-banner-body .row + .row { border-left: 1px solid #e2e5ef; }
+
+    /* ── LAYERS SECTION ── */
+    .layers-card {
+      border: 1px solid #e2e5ef;
+      border-top: 2px solid #4f46e5;
+      border-radius: 6px;
+      overflow: hidden;
+      break-inside: avoid;
+      margin-top: 7px;
+      background: color-mix(in srgb, #4f46e5 4%, #fff);
+    }
+    .layers-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 8px 4px;
+      border-bottom: 1px solid #e2e5ef;
+    }
+    .layers-title { font-size: 9px; font-weight: 700; flex: 1; }
+    .layers-subtitle { font-size: 7px; color: #64748b; }
+    .layers-constraint {
+      font-size: 7px;
+      font-weight: 700;
+      color: #4f46e5;
+      background: color-mix(in srgb, #4f46e5 8%, #fff);
+      border: 1px solid color-mix(in srgb, #4f46e5 20%, #fff);
+      border-radius: 3px;
+      padding: 1px 6px;
+    }
+    .layers-body { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .layer-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      padding: 4px 7px;
+      border-right: 1px solid #e2e5ef;
+    }
+    .layer-row:last-child { border-right: none; }
+    .layer-num {
+      font-size: 7px; font-weight: 800;
+      color: #4f46e5;
+      background: color-mix(in srgb, #4f46e5 10%, #fff);
+      border: 1px solid color-mix(in srgb, #4f46e5 20%, #fff);
+      border-radius: 3px;
+      padding: 0 4px;
+      flex-shrink: 0;
+      line-height: 1.6;
+    }
+    .layer-row.critical .layer-num { background: color-mix(in srgb, #4f46e5 16%, #fff); }
+    .layer-name { font-size: 8px; font-weight: 700; color: #0f1629; line-height: 1.2; }
+    .layer-row.critical .layer-name { color: #4338ca; }
+    .layer-desc { font-size: 7px; color: #64748b; margin-top: 1px; line-height: 1.3; }
+
+    /* ── WORKFLOW STRIP ── */
+    .workflow-strip {
+      margin-top: 7px;
+      border: 1px solid #e2e5ef;
+      border-radius: 6px;
+      overflow: hidden;
+      break-inside: avoid;
+    }
+    .workflow-strip-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 8px;
+      background: #f5f6fa;
+      border-bottom: 1px solid #e2e5ef;
+      font-size: 8px;
+      font-weight: 700;
+      color: #0f1629;
+    }
+    .workflow-rule { font-size: 7px; color: #64748b; font-weight: 400; }
+    .workflow-rule b { color: #7c3aed; }
+    .wflow { display: grid; grid-template-columns: repeat(6, 1fr); }
+    .wstep {
+      padding: 4px 6px;
+      border-right: 1px solid #e2e5ef;
+      text-align: center;
+    }
+    .wstep:last-child { border-right: none; }
+    .wstep-stage {
+      font-size: 6.5px; font-weight: 700; letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--wc, #64748b);
+      background: color-mix(in srgb, var(--wc, #64748b) 10%, #fff);
+      border: 1px solid color-mix(in srgb, var(--wc, #64748b) 20%, #fff);
+      border-radius: 2px;
+      padding: 0 4px;
+      margin-bottom: 3px;
+      display: inline-block;
+    }
+    .wstep-key kbd { font-size: 8px; }
+    .wstep-desc { font-size: 7px; color: #64748b; margin-top: 3px; line-height: 1.3; }
+
+    /* ── BRAND COLORS ── */
+    .c-macos  { --accent: #71717a; }
+    .c-term   { --accent: #059669; }
+    .c-claude { --accent: #9333ea; }
+    .c-wispr  { --accent: #2563eb; }
+    .c-1pw    { --accent: #0284c7; }
+    .c-linear { --accent: #4f46e5; }
+    .c-github { --accent: #374151; }
+    .c-cf     { --accent: #d97706; }
+    .c-render { --accent: #0d9488; }
+
+    /* ── PAGE BREAK CONTROL ── */
+    .no-break { break-inside: avoid; }
+
+    /* Screen preview styles */
+    @media screen {
+      body { max-width: 1100px; margin: 20px auto; padding: 20px; }
+      .print-btn {
+        position: fixed; top: 16px; right: 16px;
+        background: #4f46e5; color: #fff;
+        border: none; border-radius: 8px;
+        padding: 8px 16px; font-family: inherit;
+        font-size: 13px; font-weight: 600;
+        cursor: pointer; z-index: 100;
+        box-shadow: 0 2px 8px rgba(79,70,229,0.3);
+      }
+      .print-btn:hover { background: #4338ca; }
+    }
+    @media print { .print-btn { display: none; } }
+  </style>
+</head>
+<body>
+
+  <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>Hotkey <span>Reference</span></h1>
+    <div class="page-header-right">
+      MacBook · Claude Code · Linear · GitHub · Cloudflare · Render · 1Password · Wispr<br>
+      sandrabenavidez · immigr8.net
+    </div>
+  </div>
+
+  <!-- MODIFIER LEGEND -->
+  <div class="mod-strip">
+    <div class="mod-item"><span class="mod-key">⌘</span> Command</div>
+    <div class="mod-item"><span class="mod-key">⌃</span> Control</div>
+    <div class="mod-item"><span class="mod-key">⌥</span> Option</div>
+    <div class="mod-item"><span class="mod-key">⇧</span> Shift</div>
+    <div class="mod-item"><span class="mod-key">fn</span> Function</div>
+    <div class="mod-item" style="margin-left:8px; color:#4f46e5; font-weight:600;">★ = most important shortcut per tool</div>
+  </div>
+
+  <!-- MAIN GRID: Wispr banner -->
+  <div class="grid" style="margin-bottom:7px;">
+    <div class="card span4 c-wispr">
+      <div class="card-header">
+        <div class="card-logo">🎙</div>
+        <div class="card-title">Wispr Flow — speak the idea before it disappears</div>
+        <div class="card-stage">00 · Prompt</div>
+      </div>
+      <div class="card-banner-body">
+        <div class="row star"><div class="row-label">Activate dictation</div><div class="keys"><kbd>fn</kbd><span class="then">×2</span></div></div>
+        <div class="row"><div class="row-label">Stop dictation</div><div class="keys"><kbd>fn</kbd><span class="then">×2 again</span></div></div>
+        <div class="row"><div class="row-label">Set custom hotkey</div><div class="keys"><kbd>Wispr Settings</kbd></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID: 4 columns -->
+  <div class="grid">
+
+    <!-- Linear -->
+    <div class="card c-linear">
+      <div class="card-header">
+        <div class="card-logo">◆</div>
+        <div class="card-title">Linear</div>
+        <div class="card-stage">01 · Plan</div>
+      </div>
+      <div class="row star"><div class="row-label">Command menu</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>K</kbd></div></div>
+      <div class="row"><div class="row-label">Create issue</div><div class="keys"><kbd>C</kbd></div></div>
+      <div class="row"><div class="row-label">Set status</div><div class="keys"><kbd>S</kbd></div></div>
+      <div class="row"><div class="row-label">Set priority</div><div class="keys"><kbd>P</kbd></div></div>
+      <div class="row"><div class="row-label">Assign to me</div><div class="keys"><kbd>A</kbd><span class="then">then</span><kbd>M</kbd></div></div>
+      <div class="row"><div class="row-label">Copy issue ID / URL</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>.</kbd></div></div>
+      <div class="row"><div class="row-label">Go to My Issues</div><div class="keys"><kbd>G</kbd><span class="then">then</span><kbd>M</kbd></div></div>
+      <div class="row"><div class="row-label">Show all shortcuts</div><div class="keys"><kbd>?</kbd></div></div>
+    </div>
+
+    <!-- GitHub -->
+    <div class="card c-github">
+      <div class="card-header">
+        <div class="card-logo">🐙</div>
+        <div class="card-title">GitHub</div>
+        <div class="card-stage">03–05 · Build → Deploy</div>
+      </div>
+      <div class="row star"><div class="row-label">Command palette</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>K</kbd></div></div>
+      <div class="row"><div class="row-label">Global search</div><div class="keys"><kbd>S</kbd><span class="then">or</span><kbd>/</kbd></div></div>
+      <div class="row"><div class="row-label">Fuzzy find file in repo</div><div class="keys"><kbd>T</kbd></div></div>
+      <div class="row"><div class="row-label">Go to Pull Requests</div><div class="keys"><kbd>G</kbd><span class="then">then</span><kbd>P</kbd></div></div>
+      <div class="row"><div class="row-label">Go to Issues</div><div class="keys"><kbd>G</kbd><span class="then">then</span><kbd>I</kbd></div></div>
+      <div class="row"><div class="row-label">Submit comment</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>Enter</kbd></div></div>
+      <div class="row"><div class="row-label">Show all shortcuts</div><div class="keys"><kbd>?</kbd></div></div>
+    </div>
+
+    <!-- Terminal -->
+    <div class="card c-term">
+      <div class="card-header">
+        <div class="card-logo">💻</div>
+        <div class="card-title">Terminal / zsh</div>
+        <div class="card-stage">03–04 · Build + Test</div>
+      </div>
+      <div class="row star"><div class="row-label">Kill / interrupt process</div><div class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>C</kbd></div></div>
+      <div class="row"><div class="row-label">Clear screen</div><div class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>L</kbd></div></div>
+      <div class="row"><div class="row-label">Search command history</div><div class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>R</kbd></div></div>
+      <div class="row"><div class="row-label">Jump to beginning of line</div><div class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>A</kbd></div></div>
+      <div class="row"><div class="row-label">Jump to end of line</div><div class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>E</kbd></div></div>
+      <div class="row"><div class="row-label">Delete word backward</div><div class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>W</kbd></div></div>
+      <div class="row"><div class="row-label">Previous / next command</div><div class="keys"><kbd>↑</kbd><span class="then">/</span><kbd>↓</kbd></div></div>
+    </div>
+
+    <!-- macOS -->
+    <div class="card c-macos">
+      <div class="card-header">
+        <div class="card-logo">🍎</div>
+        <div class="card-title">macOS</div>
+        <div class="card-stage">All stages · System</div>
+      </div>
+      <div class="row star"><div class="row-label">Spotlight search</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>Space</kbd></div></div>
+      <div class="row"><div class="row-label">Switch apps</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>Tab</kbd></div></div>
+      <div class="row"><div class="row-label">Screenshot region</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>4</kbd></div></div>
+      <div class="row"><div class="row-label">Screenshot full screen</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>3</kbd></div></div>
+      <div class="row"><div class="row-label">Lock screen</div><div class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>⌘</kbd><span class="plus">+</span><kbd>Q</kbd></div></div>
+      <div class="row"><div class="row-label">Force quit app</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>Esc</kbd></div></div>
+      <div class="row"><div class="row-label">Mission Control</div><div class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>↑</kbd></div></div>
+      <div class="row"><div class="row-label">Switch desktops</div><div class="keys"><kbd>⌃</kbd><span class="plus">+</span><kbd>← / →</kbd></div></div>
+    </div>
+
+    <!-- Claude Code — span 2, split interior -->
+    <div class="card span2 c-claude">
+      <div class="card-header">
+        <div class="card-logo">✦</div>
+        <div class="card-title">Claude Code — let AI do the typing, you do the thinking</div>
+        <div class="card-stage">02–03 · Design + Build</div>
+      </div>
+      <div class="card-inner">
+        <div class="card-col">
+          <div class="row-group">Keybindings</div>
+          <div class="row star"><div class="row-label">Submit message</div><div class="keys"><kbd>Enter</kbd></div></div>
+          <div class="row"><div class="row-label">Newline without submitting</div><div class="keys"><kbd>⇧</kbd><span class="plus">+</span><kbd>Enter</kbd></div></div>
+          <div class="row"><div class="row-label">Stop generation</div><div class="keys"><kbd>Esc</kbd><span class="then">or</span><kbd>⌃</kbd><span class="plus">+</span><kbd>C</kbd></div></div>
+          <div class="row"><div class="row-label">Clear conversation</div><div class="keys"><kbd>/clear</kbd></div></div>
+          <div class="row"><div class="row-label">Customize keybindings</div><div class="keys"><kbd>/keybindings</kbd></div></div>
+        </div>
+        <div class="card-col">
+          <div class="row-group">Session · Config · Project</div>
+          <div class="row star"><div class="row-label">Wipe context, start fresh</div><div class="keys"><code class="cmd">/clear</code></div></div>
+          <div class="row"><div class="row-label">Summarize context</div><div class="keys"><code class="cmd">/compact</code></div></div>
+          <div class="row"><div class="row-label">Show token usage</div><div class="keys"><code class="cmd">/cost</code></div></div>
+          <div class="row star"><div class="row-label">Switch Claude model</div><div class="keys"><code class="cmd">/model</code></div></div>
+          <div class="row"><div class="row-label">View / edit settings</div><div class="keys"><code class="cmd">/config</code></div></div>
+          <div class="row"><div class="row-label">Manage tool permissions</div><div class="keys"><code class="cmd">/permissions</code></div></div>
+          <div class="row star"><div class="row-label">Generate CLAUDE.md</div><div class="keys"><code class="cmd">/init</code></div></div>
+          <div class="row"><div class="row-label">Edit memory files</div><div class="keys"><code class="cmd">/memory</code></div></div>
+          <div class="row"><div class="row-label">Review current diff</div><div class="keys"><code class="cmd">/code-review</code></div></div>
+          <div class="row"><div class="row-label">Review a pull request</div><div class="keys"><code class="cmd">/review</code></div></div>
+          <div class="row"><div class="row-label">Launch app, confirm it works</div><div class="keys"><code class="cmd">/run</code></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1Password -->
+    <div class="card c-1pw">
+      <div class="card-header">
+        <div class="card-logo">🔑</div>
+        <div class="card-title">1Password</div>
+        <div class="card-stage">All stages · Credentials</div>
+      </div>
+      <div class="row star"><div class="row-label">Quick Access / Autofill</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>\</kbd></div></div>
+      <div class="row"><div class="row-label">Lock vault</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>L</kbd></div></div>
+      <div class="row"><div class="row-label">Copy password</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>C</kbd></div></div>
+      <div class="row"><div class="row-label">Copy username</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>U</kbd></div></div>
+      <div class="row"><div class="row-label">New item</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>N</kbd></div></div>
+    </div>
+
+    <!-- Cloudflare -->
+    <div class="card c-cf">
+      <div class="card-header">
+        <div class="card-logo">☁️</div>
+        <div class="card-title">Cloudflare</div>
+        <div class="card-stage">05–06 · Deploy + Operate</div>
+      </div>
+      <div class="row star"><div class="row-label">Find on page</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>F</kbd></div></div>
+      <div class="row"><div class="row-label">Navigate (address bar)</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>L</kbd></div></div>
+      <div class="row"><div class="row-label">Hard reload / bypass cache</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd>R</kbd></div></div>
+      <div class="row"><div class="row-label">Open DevTools</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>I</kbd></div></div>
+      <div class="row"><div class="row-label">Use CLI for DNS / Workers</div><div class="keys"><kbd>wrangler</kbd></div></div>
+    </div>
+
+    <!-- Render Banner -->
+    <div class="card span4 c-render">
+      <div class="card-header">
+        <div class="card-logo">▲</div>
+        <div class="card-title">Render — push to main, everything else is automatic</div>
+        <div class="card-stage">05–06 · Deploy + Operate</div>
+      </div>
+      <div class="card-banner-body cols-4">
+        <div class="row star"><div class="row-label">Deploy (fastest way)</div><div class="keys"><kbd>git push</kbd></div></div>
+        <div class="row"><div class="row-label">Reload deploy logs</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>R</kbd></div></div>
+        <div class="row"><div class="row-label">Navigate to service</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>L</kbd></div></div>
+        <div class="row"><div class="row-label">Open DevTools</div><div class="keys"><kbd>⌘</kbd><span class="plus">+</span><kbd>⌥</kbd><span class="plus">+</span><kbd>I</kbd></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 10 ENGINEERING LAYERS -->
+  <div class="layers-card">
+    <div class="layers-header">
+      <div style="font-size:12px">🧱</div>
+      <div style="flex:1">
+        <div class="layers-title">The layers experienced engineers think in</div>
+        <div class="layers-subtitle">each layer locks in the layers below it — roles before auth, auth before authz, authz before schema, schema before infra</div>
+      </div>
+      <div class="layers-constraint">roles → auth → authz → schema → infra</div>
+    </div>
+    <div class="layers-body">
+      <div class="layer-row"><div class="layer-num">01</div><div><div class="layer-name">Users &amp; Jobs-to-be-Done</div><div class="layer-desc">Who is this for? Outcomes, not features.</div></div></div>
+      <div class="layer-row"><div class="layer-num">02</div><div><div class="layer-name">Actors &amp; Roles</div><div class="layer-desc">2–4 distinct user types. Seven = confusing roles with permissions.</div></div></div>
+      <div class="layer-row"><div class="layer-num">03</div><div><div class="layer-name">Domain Entities</div><div class="layer-desc">The nouns. Account, User, Property. Names only; no schemas yet.</div></div></div>
+      <div class="layer-row critical"><div class="layer-num">04</div><div><div class="layer-name">Identity (AuthN)</div><div class="layer-desc">How users prove who they are. SSO, magic links, password.</div></div></div>
+      <div class="layer-row critical"><div class="layer-num">05</div><div><div class="layer-name">Authorization (AuthZ)</div><div class="layer-desc">Which roles do what to which entities. Hardest to retrofit.</div></div></div>
+      <div class="layer-row critical"><div class="layer-num">06</div><div><div class="layer-name">Data Model</div><div class="layer-desc">Now the tables, columns, indexes. Most decisions already forced.</div></div></div>
+      <div class="layer-row"><div class="layer-num">07</div><div><div class="layer-name">Surfaces &amp; Boundaries</div><div class="layer-desc">APIs, UI shells, public vs internal.</div></div></div>
+      <div class="layer-row"><div class="layer-num">08</div><div><div class="layer-name">State &amp; Side Effects</div><div class="layer-desc">Transactional vs eventually consistent.</div></div></div>
+      <div class="layer-row"><div class="layer-num">09</div><div><div class="layer-name">Infra &amp; Deployment</div><div class="layer-desc">Where code runs. Most teams start here — biggest mistake.</div></div></div>
+      <div class="layer-row"><div class="layer-num">10</div><div><div class="layer-name">Observability</div><div class="layer-desc">How you'll know it's healthy.</div></div></div>
+    </div>
+  </div>
+
+  <!-- WORKFLOW STRIP -->
+  <div class="workflow-strip">
+    <div class="workflow-strip-header">
+      <span>The workflow loop — idea to deployed</span>
+      <span class="workflow-rule"><b>70%</b> planning the prompt · <b>20%</b> testing · <b>10%</b> build — AI compresses the loop, it doesn't skip it</span>
+    </div>
+    <div class="wflow">
+      <div class="wstep" style="--wc:#2563eb"><div class="wstep-stage">00 · Prompt</div><div class="wstep-key"><kbd>fn fn</kbd></div><div class="wstep-desc">Capture the thought before it disappears.</div></div>
+      <div class="wstep" style="--wc:#4f46e5"><div class="wstep-stage">01 · Plan</div><div class="wstep-key"><kbd>C</kbd></div><div class="wstep-desc">Define what done looks like before touching code.</div></div>
+      <div class="wstep" style="--wc:#9333ea"><div class="wstep-stage">02–03 · Design + Build</div><div class="wstep-key"><kbd>Enter</kbd></div><div class="wstep-desc">Shape the solution, let Claude execute it.</div></div>
+      <div class="wstep" style="--wc:#059669"><div class="wstep-stage">04 · Test</div><div class="wstep-key"><kbd>⌃C</kbd></div><div class="wstep-desc">Verify output matches what you defined in Plan.</div></div>
+      <div class="wstep" style="--wc:#0d9488"><div class="wstep-stage">05 · Deploy</div><div class="wstep-key"><kbd>git push</kbd></div><div class="wstep-desc">Make it accessible to the people who need it.</div></div>
+      <div class="wstep" style="--wc:#4f46e5"><div class="wstep-stage">06–07 · Operate + Retire</div><div class="wstep-key"><kbd>⌘K</kbd></div><div class="wstep-desc">Watch the product. Remove what stops earning its place.</div></div>
+    </div>
+  </div>
+
+</body>
+</html>
